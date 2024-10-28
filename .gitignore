@@ -1,3 +1,4 @@
+.env
 .idea
 .vscode
 lib/confs/
@@ -13,3 +14,4 @@ coverage/
 src/plugins/orangehrmFunctionalTestingPlugin
 .php-cs-fixer.cache
 .php-cs-fixer.php
+db_orange/

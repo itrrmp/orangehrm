@@ -1,7 +1,5 @@
 FROM php:8.3-apache-bookworm
 
-#WORKDIR /app
-
 ENV OHRM_VERSION 5.7
 ENV OHRM_MD5 5bd924a546e29e06c34eec73b014d139
 
@@ -19,16 +17,17 @@ RUN set -ex; \
 	libicu-dev \
 	unzip \
 	; \
-	# cd .. && rm -r html; \
-	# curl -fSL -o orangehrm.zip "https://sourceforge.net/projects/orangehrm/files/stable/${OHRM_VERSION}/orangehrm-${OHRM_VERSION}.zip"; \
-	# echo "${OHRM_MD5} orangehrm.zip" | md5sum -c -; \
-	# unzip -q orangehrm.zip "orangehrm-${OHRM_VERSION}/*"; \
-	# mv orangehrm-$OHRM_VERSION html; \
-	# rm -rf orangehrm.zip; \
-	# chown www-data:www-data html; \
-	# chown -R www-data:www-data html/src/cache html/src/log html/src/config; \
-	# chmod -R 775 html/src/cache html/src/log html/src/config; \
-	# \
+	\
+	cd .. && rm -r html; \
+	curl -fSL -o orangehrm.zip "https://sourceforge.net/projects/orangehrm/files/stable/${OHRM_VERSION}/orangehrm-${OHRM_VERSION}.zip"; \
+	echo "${OHRM_MD5} orangehrm.zip" | md5sum -c -; \
+	unzip -q orangehrm.zip "orangehrm-${OHRM_VERSION}/*"; \
+	mv orangehrm-$OHRM_VERSION html; \
+	rm -rf orangehrm.zip; \
+	chown www-data:www-data html; \
+	chown -R www-data:www-data html/src/cache html/src/log html/src/config; \
+	chmod -R 775 html/src/cache html/src/log html/src/config; \
+	\
 	docker-php-ext-configure gd --with-freetype --with-jpeg; \
 	docker-php-ext-configure ldap \
 	--with-libdir=lib/$(uname -m)-linux-gnu/ \
@@ -70,8 +69,6 @@ RUN { \
 	a2enmod rewrite; \
 	fi;
 
+WORKDIR /app
 
-RUN chown -R www-data:www-data /var/www/html && \
-	chmod -R 775 /var/www/html 
-
-# VOLUME ["/var/www/html"]
+VOLUME ["/var/www/html"]

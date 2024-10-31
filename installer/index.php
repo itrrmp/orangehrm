@@ -37,8 +37,10 @@ function isInSupportedPHPRange()
 
     $message = "PHP version should be higher than `$min` and lower than `$max`, detected version is `$currentVersion`.";
 
-    if (!(version_compare(trimVersion($currentVersion, substr_count($min, '.')), $min, '>=') &&
-        version_compare(trimVersion($currentVersion, substr_count($max, '.')), $max, '<='))) {
+    if (
+        !(version_compare(trimVersion($currentVersion, substr_count($min, '.')), $min, '>=') &&
+            version_compare(trimVersion($currentVersion, substr_count($max, '.')), $max, '<='))
+    ) {
         die($message);
     }
 

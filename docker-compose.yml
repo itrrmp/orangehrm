@@ -1,5 +1,4 @@
 services:
-
   apache:
     build:
       context: .
@@ -9,12 +8,15 @@ services:
       - 8099:80
       - 4049:443
     volumes:
-      - ./:/var/www/html
+      - ./:/app
+      - /app/installer/client/node_modules #do not map node_modules to the container (node_modules gererated for the container OS may have differences to my windows local node_modules)
+      - /app/src/client/node_modules
+      - /app/src/test/functional/node_modules
     environment:
-      ORANGEHRM_DATABASE_HOST: '${DATABASE_HOST}'
-      ORANGEHRM_DATABASE_USER: '${DATABASE_USER}'
-      ORANGEHRM_DATABASE_PASSWORD: '${DATABASE_PASSWORD}'
-      ORANGEHRM_DATABASE_NAME: '${DATABASE_NAME}'
+      ORANGEHRM_DATABASE_HOST: "${DATABASE_HOST}"
+      ORANGEHRM_DATABASE_USER: "${DATABASE_USER}"
+      ORANGEHRM_DATABASE_PASSWORD: "${DATABASE_PASSWORD}"
+      ORANGEHRM_DATABASE_NAME: "${DATABASE_NAME}"
       PUID: 998
       PGID: 100
     depends_on:
@@ -31,10 +33,10 @@ services:
     volumes:
       - ./db_orange:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: '${DATABASE_NAME}'
-      MYSQL_ROOT_USER: '${DATABASE_USER}'
-      MYSQL_PASSWORD: '${DATABASE_PASSWORD}'
-      MYSQL_ROOT_PASSWORD: '${DATABASE_PASSWORD}'
+      MYSQL_DATABASE: "${DATABASE_NAME}"
+      MYSQL_ROOT_USER: "${DATABASE_USER}"
+      MYSQL_PASSWORD: "${DATABASE_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DATABASE_PASSWORD}"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -48,7 +50,7 @@ services:
       #PMA_USER: '${DATABASE_USER}'
       #PMA_PASSWORD: '${DATABASE_PASSWORD}'
       #MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: '${DATABASE_PASSWORD}'
+      MYSQL_ROOT_PASSWORD: "${DATABASE_PASSWORD}"
 
 volumes:
   db_data:
